@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .chat-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #4b1d42;
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .chat-history {
+            height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #fbfcfc;
+        }
+
+        .message {
+            margin-bottom: 10px;
+        }
+
+        .message strong {
+            color: #4b1d42;
+        }
+
+        .chat-input {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .chat-input button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #4b1d42;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chat-input button:hover {
+            background-color: #341436;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Chat Application</h2>
+            <select id="chat-users">
+                <!-- Dynamic User List -->
+            </select>
+        </div>
+        <div class="chat-history" id="chat-history">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
+    <script>
+        const socket = io('http://localhost:3000'); // Update with your server URL
+        const chatHistory = document.getElementById('chat-history');
+        const chatUsers = document.getElementById('chat-users');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+
+        let currentChatUser = null;
+
+        // Fetch available users
+        fetch('/api/users')
+            .then(response => response.json())
+            .then(users => {
+                chatUsers.innerHTML = users.map(user => `
+                    <option value="${user.username}">${user.username}</option>
+                `).join('');
+            });
+
+        // Load chat history
+        function loadChatHistory(user) {
+            fetch(`/chat-history?user1=${user}&user2=${currentChatUser}`)
+                .then(response => response.json())
+                .then(messages => {
+                    chatHistory.innerHTML = messages.map(msg => `
+                        <div class="message">
+                            <strong>${msg.sender}:</strong> ${msg.message}
+                            <em>${new Date(msg.created_at).toLocaleString()}</em>
+                        </div>
+                    `).join('');
+                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                });
+        }
+
+        // Handle user selection change
+        chatUsers.addEventListener('change', (e) => {
+            currentChatUser = e.target.value;
+            loadChatHistory(currentChatUser);
+        });
+
+        // Handle sending messages
+        sendButton.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            socket.emit('send-message', {
+                from: 'currentUser', // Replace with logged-in user
+                to: currentChatUser,
+                message
+            });
+
+            messageInput.value = '';
+        });
+
+        // Receive new messages
+        socket.on('receive-message', (data) => {
+            if (data.from === currentChatUser || data.to === currentChatUser) {
+                chatHistory.innerHTML += `
+                    <div class="message">
+                        <strong>${data.from}:</strong> ${data.message}
+                        <em>${new Date().toLocaleString()}</em>
+                    </div>
+                `;
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>

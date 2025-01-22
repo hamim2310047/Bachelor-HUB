@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Let Posts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #792571;
+            color: white;
+            padding: 1px;
+            text-align: center;
+            position: relative;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4b1d42;
+            padding: 10px 20px;
+        }
+
+        nav img {
+            height: 50px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            background-color: #1a1a1a;
+            border-radius: 5px;
+        }
+
+        nav .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        nav input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        nav button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        nav button:hover {
+            background-color: #1a1a1a;
+        }
+
+        header .add-button {
+            position: absolute;
+            right: 1rem;
+            top: 75%;
+            transform: translateY(-50%);
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            color: white;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        header .add-button:hover {
+            background-color: #218838;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .post {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .post h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .post p {
+            margin: 0.5rem 0;
+            color: #555;
+        }
+        .post .location {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .post .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .post .contact {
+            color: #007bff;
+        }
+
+        .post button {
+            /* align-self: flex-start; */
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            color: white;
+            background-color: #4a1c49;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .post button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #4b1d42;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="/image.png" alt="BachelorHub">
+            <div>
+                <a href="/homepage.html">Home</a>
+                <a href="/profile.html">Profile</a>
+                <a href="/tolet.html">To-let</a>
+                <a href="/buysell.html">KenaBecha.in</a>
+            </div>
+            <div class="search-container">
+                <input type="text" placeholder="Search Here">
+                <button>Search</button>
+            </div>
+            <a href="/logout">logOut</a>
+        </nav>
+        <h3>Available To-Let Posts</h3>
+        <a href="/add-tolet.html" class="add-button">Add To-Let Post</a>
+    </header>
+
+    <div class="container" id="posts">
+        <!-- Posts will be dynamically loaded here -->
+    </div>
+
+    <script>
+        // Fetch all posts and display them
+        fetch('/api/tolet')
+            .then(response => response.json())
+            .then(posts => {
+                const container = document.getElementById('posts');
+                container.innerHTML = posts.map(post => `
+                    <div class="post">
+                        <h2>${post.title}</h2>
+                        <p>${post.description}</p>
+                        <p class="Location">Location: ${post.location}</p>
+                        <p class="price">Rent: ${post.price}</p>
+                        <p>Posted by: ${post.username}</p>
+                        <p class="contact"><strong>Contact:</strong> ${post.contact}</p>
+                        <img src="${post.image}" alt="Post Image">
+                        <button onclick="expressInterest(${post.id})">Interested</button>
+                    </div>
+                `).join('');
+            });
+
+        // Handle "Interested" button click
+        function expressInterest(postId) {
+            fetch('/tolet/interested', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postId })
+            }).then(response => {
+                if (response.ok) {
+                    alert('You have expressed interest in this post.');
+                } else {
+                    alert('Failed to express interest. Please log in.');
+                }
+            });
+        }
+    </script>
+    <footer>
+        &copy; Bachelor HUB
+    </footer>
+</body>
+</html>

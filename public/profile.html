@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: #792571;
+            color: white;
+            padding: 1px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4b1d42;
+            padding: 10px 20px;
+        }
+
+        nav img {
+            height: 50px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            background-color: #1a1a1a;
+            border-radius: 5px;
+        }
+
+        nav .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        nav input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        nav button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        nav button:hover {
+            background-color: #1a1a1a;
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #ffc61b;
+        }
+
+        h2 {
+            color: #551a54;
+        }
+
+        .button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            color: white;
+            background: #520c3a;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        main {
+            margin: 20px auto;
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        main p {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* Post Card Styles */
+        .post {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .post h3 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            color: #551a54;
+        }
+
+        .post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .post p {
+            margin: 5px 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* Delete Button */
+        .post button {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #520c3a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .post button:hover {
+            background-color: #c9302c;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .post-actions button {
+            padding: 10px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .post-actions button:first-child {
+            background-color: #520c3a;
+            /* Delete button */
+            color: white;
+        }
+
+        .post-actions button:first-child:hover {
+            background-color: #c9302c;
+        }
+
+        .post-actions button:last-child {
+            background-color: #5bc0de;
+            /* Update button */
+            color: white;
+        }
+
+        .post-actions button:last-child:hover {
+            background-color: #31b0d5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #4b1d42;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <img src="/image.png" alt="BachelorHub">
+            <div>
+                <a href="/homepage.html">Home</a>
+                <a href="/profile.html">Profile</a>
+                <a href="/tolet.html">To-let</a>
+                <a href="/buysell.html">KenaBecha.in</a>
+            </div>
+            <div class="search-container">
+                <input type="text" placeholder="Search Here">
+                <button>Search</button>
+            </div>
+            <a href="/logout">logOut</a>
+        </nav>
+        <h3>Welcome, <span id="username"></span>!</h3>
+    </header>
+    <div class="container">
+        <h2>Your Profile</h2>
+        <h3><strong>Username:</strong> <span id="profile-username"></span></h3>
+        <p><strong>Name:</strong> <span id="profile-name"></span></p>
+        <p><strong>Contact:</strong> <span id="profile-contact"></span></p>
+
+        <a class="button" href="/settings.html">Edit Profile</a> <!-- Link to profile settings -->
+        <a class="button" href="/logout">Logout</a>
+    </div>
+    <main id="my-posts">
+        <h2>My To-let Post</h2>
+        <!-- User posts will be loaded here -->
+    </main>
+    <main id="my-itemposts">
+        <h2>My Sell Post</h2>
+        <!-- User posts will be loaded here -->
+    </main>
+    <script>
+        // Fetch user data and populate the page
+        fetch('/api/user')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+                return response.json();
+            })
+            .then(user => {
+                document.getElementById('username').textContent = user.username;
+                document.getElementById('profile-username').textContent = user.username;
+                document.getElementById('profile-name').textContent = user.name;
+                document.getElementById('profile-contact').textContent = user.contact;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        fetch('/api/my-posts')
+            .then(response => response.json())
+            .then(posts => {
+                const postsContainer = document.getElementById('my-posts');
+
+                if (posts.length === 0) {
+                    postsContainer.innerHTML = '<p>No posts yet. Add your first post!</p>';
+                    return;
+                }
+
+                posts.forEach(post => {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('post');
+                    postElement.innerHTML = `
+                        <h3>${post.title}</h3>
+                        <p>${post.description}</p>
+                        <p>Price: ${post.price}</p>
+                        <p>Location: ${post.location}</p>
+                        <img src="${post.image}" alt="Post Image" style="max-width: 100%; height: auto;">
+                        <button onclick="updatePost(${post.id})">Update</button>
+                        <button onclick="deletePost(${post.id})">Delete Post</button>
+                    `;
+                    postsContainer.appendChild(postElement);
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('my-posts').innerHTML = '<p>Error loading posts.</p>';
+            });
+
+        // Function to delete a post
+        function deletePost(postId) {
+            fetch(`/api/delete-post/${postId}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Post deleted successfully!');
+                        location.reload();
+                    } else {
+                        alert('Failed to delete post.');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Error deleting post.');
+                });
+        }
+        // Redirect to Update Page
+        function updatePost(postId) {
+            console.log(`Updating post with ID: ${postId}`);
+
+            const updatedTitle = prompt('Enter the updated title:');
+            const updatedDescription = prompt('Enter the updated description:');
+            const updatedPrice = prompt('Enter the updated price:');
+            const updatedLocation = prompt('Enter the updated location:');
+
+            if (!updatedTitle || !updatedDescription || !updatedPrice || !updatedLocation) {
+                alert('All fields must be filled out.');
+                return;
+            }
+
+            const updatedData = {
+                title: updatedTitle,
+                description: updatedDescription,
+                price: updatedPrice,
+                location: updatedLocation,
+            };
+
+            console.log('Updated Data:', updatedData);
+
+            // Send the PUT request with JSON data
+            fetch(`/api/update-post/${postId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedData),
+            })
+                .then(response => {
+                    console.log('Response Status:', response.status);
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return response.json().then(err => Promise.reject(err));
+                    }
+                })
+                .then(data => {
+                    console.log('Response Data:', data);
+                    alert('Post updated successfully!');
+                    location.reload();
+                })
+                .catch(err => {
+                    alert('Post updated successfully!');
+                    location.reload();
+                });
+        }
+        // fileInput.click();
+        //item post
+        fetch('/api/my-itemposts')
+            .then(response => response.json())
+            .then(posts => {
+                const postsContainer = document.getElementById('my-itemposts');
+
+                if (posts.length === 0) {
+                    postsContainer.innerHTML = '<p>No posts yet. Add your first post!</p>';
+                    return;
+                }
+
+                posts.forEach(post => {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('post');
+                    postElement.innerHTML = `
+                        <h3>${post.title}</h3>
+                        <p>${post.description}</p>
+                        <p>Price: ${post.price}</p>
+                        <p>Location: ${post.location}</p>
+                        <img src="${post.image}" alt="Post Image" style="max-width: 100%; height: auto;">
+                        <button onclick="updateitemPost(${post.id})">Update</button>
+                        <button onclick="deleteitemPost(${post.id})">Delete Post</button>
+                    `;
+                    postsContainer.appendChild(postElement);
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('my-posts').innerHTML = '<p>Error loading posts.</p>';
+            });
+
+        // Function to delete a post
+        function deleteitemPost(postId) {
+            fetch(`/api/delete-itempost/${postId}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Post deleted successfully!');
+                        location.reload();
+                    } else {
+                        alert('Failed to delete post.');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Error deleting post.');
+                });
+        }
+        // Redirect to Update Page
+        function updateitemPost(postId) {
+            console.log(`Updating post with ID: ${postId}`);
+
+            const updatedTitle = prompt('Enter the updated title:');
+            const updatedDescription = prompt('Enter the updated description:');
+            const updatedPrice = prompt('Enter the updated price:');
+            const updatedLocation = prompt('Enter the updated location:');
+
+            if (!updatedTitle || !updatedDescription || !updatedPrice || !updatedLocation) {
+                alert('All fields must be filled out.');
+                return;
+            }
+
+            const updatedData = {
+                title: updatedTitle,
+                description: updatedDescription,
+                price: updatedPrice,
+                location: updatedLocation,
+            };
+
+            console.log('Updated Data:', updatedData);
+
+            // Send the PUT request with JSON data
+            fetch(`/api/update-itempost/${postId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedData),
+            })
+                .then(response => {
+                    console.log('Response Status:', response.status);
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return response.json().then(err => Promise.reject(err));
+                    }
+                })
+                .then(data => {
+                    console.log('Response Data:', data);
+                    alert('Post updated successfully!');
+                    location.reload();
+                })
+                .catch(err => {
+                    alert('Post updated successfully!');
+                    location.reload();
+                });
+        }
+    </script>
+    <footer>
+        &copy; Bachelor HUB
+    </footer>
+</body>
+
+</html>

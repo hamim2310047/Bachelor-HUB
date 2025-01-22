@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #fbfcfc;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4b1d42;
+            padding: 10px 20px;
+        }
+
+        nav img {
+            height: 50px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            background-color: #1a1a1a;
+            border-radius: 5px;
+        }
+
+        nav .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        nav input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        nav button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        nav button:hover {
+            background-color: #1a1a1a;
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #ffc61b;
+        }
+
+        h2 {
+            color: #551a54;
+        }
+
+        .button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            color: white;
+            background: #520c3a;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        input,
+        button {
+            padding: 10px;
+            width: 100%;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .delete-account {
+            background: #dc3545;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #4b1d42;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <img src="/image.png" alt="BachelorHub">
+            <div>
+                <a href="#">Home</a>
+                <a href="/profile.html">Profile</a>
+                <a href="/tolet.html">To-let</a>
+                <a href="#">KenaBecha.in</a>
+            </div>
+            <div class="search-container">
+                <input type="text" placeholder="Search Here">
+                <button>Search</button>
+            </div>
+            <a href="/logout">logOut</a>
+        </nav>
+        <h1>Edit Profile</h1>
+    </header>
+    <div class="container">
+        <h2>Update Your Information</h2>
+
+        <!-- Update Name -->
+        <form id="update-name-form">
+            <input type="text" id="new-name" placeholder="New Name" />
+            <button type="submit">Update Name</button>
+        </form>
+
+        <!-- Update Username -->
+        <form id="update-username-form">
+            <input type="text" id="new-username" placeholder="New Username" />
+            <button type="submit">Update Username</button>
+        </form>
+
+        <!-- Update Password -->
+        <form id="update-password-form">
+            <input type="password" id="new-password" placeholder="New Password" />
+            <button type="submit">Update Password</button>
+        </form>
+
+        <!-- Update Contact -->
+        <form id="update-contact-form">
+            <input type="text" id="new-contact" placeholder="New Contact" />
+            <button type="submit">Update Contact</button>
+        </form>
+
+        <h3>Delete Account</h3>
+        <form id="delete-account-form">
+            <button type="submit" class="delete-account">Delete Account</button>
+        </form>
+
+        <a class="button" href="/profile.html">Back to Profile</a>
+    </div>
+
+    <script>
+        // Fetch user data and populate the fields
+        fetch('/api/user')
+            .then(response => response.json())
+            .then(user => {
+                document.getElementById('new-name').value = user.name;
+                document.getElementById('new-username').value = user.username;
+                document.getElementById('new-contact').value = user.contact;
+            });
+
+        // Handle update for Name
+        document.getElementById('update-name-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById('new-name').value;
+
+            fetch('/update-name', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name })
+            })
+                .then(response => response.text())
+                .then(responseText => {
+                    alert(responseText);
+                    location.reload(); // Reload page to show updated data
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update name.');
+                });
+        });
+
+        // Handle update for Username
+        document.getElementById('update-username-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const username = document.getElementById('new-username').value;
+
+            fetch('/update-username', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username })
+            })
+                .then(response => response.text())
+                .then(responseText => {
+                    alert(responseText);
+                    location.reload(); // Reload page to show updated data
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update username.');
+                });
+        });
+
+        // Handle update for Password
+        document.getElementById('update-password-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const password = document.getElementById('new-password').value;
+
+            fetch('/update-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ password })
+            })
+                .then(response => response.text())
+                .then(responseText => {
+                    alert(responseText);
+                    location.reload(); // Reload page to show updated data
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update password.');
+                });
+        });
+
+        // Handle update for Contact
+        document.getElementById('update-contact-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const contact = document.getElementById('new-contact').value;
+
+            fetch('/update-contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ contact })
+            })
+                .then(response => response.text())
+                .then(responseText => {
+                    alert(responseText);
+                    location.reload(); // Reload page to show updated data
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update contact.');
+                });
+        });
+
+        // Handle account deletion
+        document.getElementById('delete-account-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                const deleteButton = document.querySelector('#delete-account-form button');
+                deleteButton.disabled = true; // Disable button to prevent double submission
+
+                fetch('/delete-account', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to delete account. Server responded with status ' + response.status);
+                        }
+                        return response.text();
+                    })
+                    .then(responseText => {
+                        alert(responseText);
+                        window.location.href = '/login'; // Redirect to login page
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Failed to delete account. Please try again.');
+                    })
+                    .finally(() => {
+                        deleteButton.disabled = false; // Re-enable button in case of failure
+                    });
+            }
+        });
+
+    </script>
+    <footer>
+        &copy; Bachelor HUB
+    </footer>
+</body>
+
+</html>
